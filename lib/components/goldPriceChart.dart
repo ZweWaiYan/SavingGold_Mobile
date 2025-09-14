@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class GoldPriceChart extends StatefulWidget {
   final dynamic price;
+  final dynamic labels;
 
-  const GoldPriceChart({super.key, required this.price});
+  const GoldPriceChart({super.key, required this.price, required this.labels});
 
   @override
   State<GoldPriceChart> createState() => _GoldPriceChartState();
@@ -19,7 +20,7 @@ class _GoldPriceChartState extends State<GoldPriceChart> {
       child: LineChart(
         LineChartData(
           minX: 0,
-          maxX: 6,
+          maxX: (widget.labels.length - 1).toDouble(),
           minY: 7745000,
           maxY: 7775000,
           titlesData: FlTitlesData(
@@ -32,25 +33,19 @@ class _GoldPriceChartState extends State<GoldPriceChart> {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
+                interval: 1,
                 getTitlesWidget: (value, meta) {
-                  const days = [
-                    'Mon',
-                    'Tue',
-                    'Wed',
-                    'Thu',
-                    'Fri',
-                    'Sat',
-                    'Sun',
-                  ];
-                  if (value.toInt() >= 0 && value.toInt() < days.length) {
+                  int index = value.toInt();
+                  if (index >= 0 && index < widget.labels.length) {
                     return Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
-                      ), // space from chart
-                      child: Text(days[value.toInt()]),
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        widget.labels[index],
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     );
                   }
-                  return Text('');
+                  return const SizedBox.shrink();
                 },
               ),
             ),
@@ -97,16 +92,15 @@ class _GoldPriceChartState extends State<GoldPriceChart> {
 
           lineTouchData: LineTouchData(
             touchTooltipData: LineTouchTooltipData(
-              getTooltipColor: (spots) => Colors.black87, // tooltip background
+              getTooltipColor: (spots) => Colors.black87,
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((lineBarSpot) {
                   return LineTooltipItem(
-                    '', // no default text
-                    const TextStyle(), // base style
+                    '',
+                    const TextStyle(),
                     children: [
                       TextSpan(
-                        text:
-                            '${lineBarSpot.y.toStringAsFixed(0)} MMK', // 👈 value + MMK
+                        text: '${lineBarSpot.y.toStringAsFixed(0)} MMK',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.white,

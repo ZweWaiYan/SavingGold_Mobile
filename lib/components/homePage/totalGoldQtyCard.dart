@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Totalgoldqtycard extends StatefulWidget {
-  const Totalgoldqtycard({super.key});
+  const Totalgoldqtycard({
+    super.key,
+    required this.totalGoldKyat,
+    required this.totalGoldPae,
+    required this.totalGoldYway,
+    required this.totalMoney,
+  });
+
+  final double totalGoldKyat;
+  final double totalGoldPae;
+  final double totalGoldYway;
+  final double totalMoney;
 
   @override
   State<Totalgoldqtycard> createState() => _TotalgoldqtycardState();
@@ -73,12 +84,95 @@ class _TotalgoldqtycardState extends State<Totalgoldqtycard> {
             children: [
               Text('ရွှေစာရင်းလက်ကျန်', style: TextStyle(fontSize: 14)),
               SizedBox(height: 10),
-              Text(
-                _isVisible
-                    ? '1,250,000 ကျပ် , 0.500 ပဲ , 1.250 ရွှေး' // actual numbers
-                    : '... ကျပ် , ... ပဲ , ... ရွှေး', // hidden
-                style: TextStyle(fontSize: 14),
-              ),
+              // Text(
+              //   _isVisible
+              //       ? widget.formattedText
+              //       : '... ကျပ် , ... ပဲ , ... ရွေး',
+              //   style: TextStyle(fontSize: 14),
+              // ),
+              _isVisible
+                  ? RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: widget.totalGoldKyat.toStringAsFixed(0),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "ကျပ်",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)), // space
+                          TextSpan(
+                            text: widget.totalGoldPae.toStringAsFixed(2),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "ပဲ",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: widget.totalGoldYway.toStringAsFixed(2),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "ရွေး",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    )
+                  : RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "...",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "ကျပ်",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)), // space
+                          TextSpan(
+                            text: "...",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "ပဲ",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "...",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                          WidgetSpan(child: SizedBox(width: 8)),
+                          TextSpan(
+                            text: "ရွေး",
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
             ],
           ),
 
@@ -88,15 +182,35 @@ class _TotalgoldqtycardState extends State<Totalgoldqtycard> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('ငွေစာရင်းလက်ကျန်', style: TextStyle(fontSize: 14)),
+              Text('ငွေစာရင်း', style: TextStyle(fontSize: 14)),
               SizedBox(height: 10),
               Row(
                 children: [
                   Row(
                     children: [
-                      Text(
-                        _isVisible ? '1,250,000 MMK' : '... MMK',
-                        style: TextStyle(fontSize: 14),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: _isVisible
+                                  ? widget.totalMoney.toStringAsFixed(2)
+                                  : '...',
+                              style: TextStyle(
+                                fontSize: 17, // big
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' MMK',
+                              style: TextStyle(
+                                fontSize: 15, // normal size
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(width: 10),
                     ],

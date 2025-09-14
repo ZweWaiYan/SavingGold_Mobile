@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gold_td/mainNavigationPage.dart';
-import 'package:gold_td/page/signUpPage.dart';
+import 'package:gold_td/page/authPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,12 +14,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/signUpPage',
+      initialRoute: '/authPage',
       theme: ThemeData(scaffoldBackgroundColor: Color(0xFFE0DCDC)),
       routes: {
         '/': (context) => const MainNavigationPage(),
 
-        '/signUpPage': (context) => const SignUpPage(),
+        '/authPage': (context) => const Authpage(),
       },
     );
   }

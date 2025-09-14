@@ -1,12 +1,18 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gold_td/components/goldPriceChart.dart';
+import 'package:gold_td/components/homePage/timeGoldPriceChart.dart';
 import 'package:gold_td/enumData/data.dart';
 
 class Chartcard extends StatefulWidget {
   final int selectedgoldPriceDateIndex;
 
-  const Chartcard({super.key, required this.selectedgoldPriceDateIndex});
+  const Chartcard({
+    super.key,
+    required this.selectedgoldPriceDateIndex,
+    required double todayBuyGoldPrice,
+    required double todaySellGoldPrice,
+  });
 
   @override
   State<Chartcard> createState() => _ChartcardState();
@@ -26,6 +32,7 @@ class _ChartcardState extends State<Chartcard> {
   Widget build(BuildContext context) {
     // Example dynamic prices based on selected index
     List<double> prices = getGoldPricesForIndex(selectedIndex);
+    List<String> labels = getGoldlabelsForIndex(selectedIndex);
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -113,7 +120,7 @@ class _ChartcardState extends State<Chartcard> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 15),
               child: Text(
-                'အသေးစိတ်ကြည့်ရန်',
+                'အသေးစိတ်ကြည့်ရန် (ဝယ်စျေး)',
                 style: TextStyle(fontSize: 13, color: Color(0xFF9C0003)),
               ),
             ),
@@ -123,6 +130,12 @@ class _ChartcardState extends State<Chartcard> {
           if (isExpanded)
             Column(
               children: [
+                SizedBox(height: 20),
+
+                Timegoldpricechart(price: prices),
+
+                SizedBox(height: 20),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(goldPriceDate.length, (index) {
@@ -157,7 +170,7 @@ class _ChartcardState extends State<Chartcard> {
                 SizedBox(height: 20),
 
                 // Chart with dynamic prices
-                GoldPriceChart(price: prices),
+                GoldPriceChart(price: prices, labels: labels),
               ],
             ),
         ],
@@ -165,15 +178,25 @@ class _ChartcardState extends State<Chartcard> {
     );
   }
 
-  // Example function: returns dummy prices based on selected index
   List<double> getGoldPricesForIndex(int index) {
-    // Replace with your real data logic
     List<List<double>> allPrices = [
       [7750000, 7765000, 7745000, 7765000, 7770000, 7775000, 7760000],
-      [7745000, 7755000, 7750000, 7755000, 7760000, 7765000, 7755000],
-      // add more data sets if needed
+      [7750000, 7765000, 7745000, 7765000],
+      [7750000, 7765000, 7745000, 7765000, 7770000, 7775000],
+      [7750000, 7765000, 7745000, 7765000],
     ];
 
     return allPrices[index % allPrices.length];
+  }
+
+  List<String> getGoldlabelsForIndex(int index) {
+    List<List<String>> allLabels = [
+      ["Mon", "Tue", "Web", "Thu", "Fri", "Sat", "Sun"],
+      ["Week 1", "Week 2", "Week 3", "Week 4"],
+      ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      ["Q 1", "Q 2", "Q 3", "Q 4"],
+    ];
+
+    return allLabels[index % allLabels.length];
   }
 }

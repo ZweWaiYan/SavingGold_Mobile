@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gold_td/components/goldPriceChart.dart';
@@ -15,6 +17,48 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedgoldPriceDateIndex = 0;
+
+  double todayBuyGoldPrice = 7759985;
+  double todaySellGoldPrice = 7700000;
+
+  double totalGoldKyat = 0.00;
+  double totalGoldPae = 0.00;
+  double totalGoldYway = 0.00;
+
+  double totalMoney = 0.00;
+  double totalYway = 0.00;
+
+  void updateGold({double? inputYway, int? fromWhere}) {
+    if (inputYway == null) return;
+
+    if (fromWhere == 0) {
+      totalYway += inputYway;
+    } else {
+      totalYway -= inputYway;
+    }
+
+    // Convert step by step
+    int kyat = totalYway ~/ 128;
+    double remainderAfterKyat = totalYway - kyat * 128;
+
+    int pae = remainderAfterKyat ~/ 8;
+    double yway = remainderAfterKyat - pae * 8;
+
+    setState(() {
+      totalGoldKyat = kyat.toDouble();
+      totalGoldPae = pae.toDouble();
+      totalGoldYway = yway;
+    });
+  }
+
+  void updateMoney() {
+    double totaGold =
+        totalGoldKyat + (totalGoldPae / 16) + (totalGoldYway / 128);
+
+    setState(() {
+      totalMoney = totaGold * todaySellGoldPrice;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +115,27 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 //Main Card
-                Totalgoldqtycard(),
+                Totalgoldqtycard(
+                  totalGoldKyat: totalGoldKyat,
+                  totalGoldPae: totalGoldPae,
+                  totalGoldYway: totalGoldYway,
+                  totalMoney: totalMoney,
+                ),
 
                 //ယနေ့ အခေါက်ရွှေစျေးနှုန်း
                 Chartcard(
                   selectedgoldPriceDateIndex: _selectedgoldPriceDateIndex,
+                  todayBuyGoldPrice: todayBuyGoldPrice,
+                  todaySellGoldPrice: todaySellGoldPrice,
                 ),
 
                 //ရွှေစျေးနှုန်တွက်ရန်
-                Calculategoldpricecard(),
+                Calculategoldpricecard(
+                  todayBuyGoldPrice: todayBuyGoldPrice,
+                  todaySellGoldPrice: todaySellGoldPrice,
+                  onUpdateGold: updateGold,
+                  onUpdateMoney: updateMoney,
+                ),
 
                 //မှတ်တမ်း
                 Historylistcard(),

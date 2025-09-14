@@ -46,6 +46,7 @@ dependencies:
   file_picker: ^10.3.2
   fl_chart: ^1.0.0  
   animated_notch_bottom_bar: ^1.0.3
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
